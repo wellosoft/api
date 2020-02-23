@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Get Indonesian NIK Data">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+
+<body style="
+font-family: 'Segoe UI', sans-serif;
+width: 400px;
+margin: auto;
+background: #d3effd;">
+
+	<p><label>NIK: <input type="text" id="nik" maxlength="16"></label></p>
+	<div id="app">
+	</div>
+	<p id="footer">
+		<i>Algorithm by <a href="https://github.com/bachors/nik_parse.js">nik_parse.js</a></i>
+	</p>
+	<script
+		src="https://cdn.jsdelivr.net/gh/bachors/nik_parse.js@4a8f5967fe9ebbfe134d9a8ece7349d9f804bc5a/src/nik_parse.js">
+	</script>
+	<script>
+		function uuupdate(e) {
+			var data = nikParse(e.target.value);
+			document.getElementById('app').innerHTML = `
+			<p>Tgl Lahir: <b>${data.lahir.tanggal}-${data.lahir.bulan}-${data.lahir.tahun}</b></p>
+			<p>Jenis Kelamin: <b>${data.kelamin}</b></p>
+			<p>Alamat<br>
+			&nbsp;&nbsp;Kecamatan: <b>${data.wilayah.kecamatan}</b><br>
+			&nbsp;&nbsp;Kota/Kabupaten: <b>${data.wilayah.kotakab}</b><br>
+			&nbsp;&nbsp;Provinsi: <b>${data.wilayah.provinsi}</b></p>
+			<p>Kode Unik:  <b>${data.uniqcode}</b></p>
+			`;
+		}
+		const niik = new URLSearchParams(window.location.search).get('nik');
+		const nik = document.getElementById('nik');
+		if (niik) {
+			nik.value = niik;
+			uuupdate({target: nik});
+		}
+		nik.oninput = uuupdate;
+	</script>
+</body>
+
+</html>
