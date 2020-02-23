@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Redirect to WhatsApp number</title>
+	<meta name="theme-color" content="#22DD55">
+	<link rel="manifest" href="/wa/manifest.json">
+</head>
+<body>
+	<script>
+		var txt = prompt('Paste text here');
+
+		if (txt) {
+			var x = /(?:\+?(\d{1,3}))?[- (]*(\d{3})[- )]*(\d{3}\d?)[- ]*(\d{4})(?: *x(\d+))?\b/;
+			var y = x.exec(txt)[0].replace(/[- ]/g, '');
+			if (y.startsWith('08'))
+				y = '628'+y.substring(2);
+			window.location = 'http://wa.me/'+y;
+		}
+	</script>
+</body>
+</html>

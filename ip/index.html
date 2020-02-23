@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Get IP Approx Geo Info">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+<div id="app"></div>
+<p id="footer">
+	Data from <a href="https://ipinfo.io/">ipinfo.com</a> and <a href="https://countryflags.io">countryflags.io</a>.
+	<a href="https://ipinfo.io/json">Raw data</a>
+</p>
+<script>
+// Set up our HTTP request
+var xhr = new XMLHttpRequest();
+
+// Setup our listener to process completed requests
+xhr.onload = function () {
+	// Process our return data
+	if (xhr.status >= 200 && xhr.status < 300) {
+		data = JSON.parse(xhr.responseText);
+		document.getElementById('app').innerHTML = `
+		<h1>${data.ip}</h1>
+		<img id="flag" src="https://www.countryflags.io/${data.country.toLowerCase()}/flat/64.png" style="float:right">
+		<p id="loc">Approx Location: <a href="https://maps.google.com/?q=${
+			encodeURIComponent([data.city,data.region,data.country].join(', '))}" rel="noreferrer">
+			${data.city}, ${data.region}, ${data.country}</a></p>
+		<p id="geo">Approx Geo: <a href="https://maps.google.com/?q=${data.loc}" rel="noreferrer">${data.loc}</a></p>
+		<p id="org">Provider: <a href="https://google.com/search?q=${data.org}" rel="noreferrer">${data.org}</a></p>
+		`;
+	} else {
+		// Runs when it's not
+		document.write(xhr.responseText);
+	}
+};
+
+// Create and send a GET request
+// The first argument is the post type (GET, POST, PUT, DELETE, etc.)
+// The second argument is the endpoint URL
+xhr.open('GET', 'http://ipinfo.io/json');
+xhr.send();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+	"short_name": "WA Redirect",
+	"name": "WhatsApp Number Redirect",
+	"description": "Redirect to WhatsApp number",
+	"icons": [
+	  {
+		"src": "whatsapp-512.png",
+		"type": "image/png",
+		"sizes": "512x512"
+	  }, {
+		"src": "whatsapp-192.png",
+		"type": "image/png",
+		"sizes": "192x192"
+	  }
+	],
+	"start_url": "/wa/",
+	"background_color": "#FFFFFF",
+	"display": "standalone",
+	"scope": "/wa/",
+	"theme_color": "#22DD55"
+  }
