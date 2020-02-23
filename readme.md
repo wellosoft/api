@@ -10,8 +10,15 @@ Melihat Informasi Publik IP.
 
 Melihat Informasi terdapat dalam NIK.
 
+## [/plat/](https://api.wellosoft.net/plat/)
+
+Melihat Informasi terdapat dalam Nomor Plat Indonesia.
+
 ## [/wa/](https://api.wellosoft.net/wa/)
 
 Mendeteksi Nomor HP dan memunculkan redirect ke Link wa.me yang benar.
 
 Jika yang dideteksi adalah nomor HP lokal (08xxx) maka otomatis diarahkan ke nomor +62.
+
+### [GitHub Repo](https://github.com/wellosoft/api)
+

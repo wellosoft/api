@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Get Indonesian Plat Data">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Get Plat ID Info</title>
+</head>
+
+<body style="
+font-family: 'Segoe UI', sans-serif;
+max-width: 400px;
+margin: auto;
+background: #d3fdef;">
+
+	<p><label>Plat Number: <input type="text" id="plat" maxlength="16"></label></p>
+	<div id="app"></div>
+	<p id="footer">
+		<i>Source <a href="https://id.wikipedia.org/wiki/Tanda_nomor_kendaraan_bermotor">Wikipedia, Feb 2020</a></i>
+	</p>
+	<script	src="parse_platid.js">
+	</script>
+	<script>
+		function uuupdate(e) {
+			var data = parsePlatID(e.target.value);
+			document.getElementById('app').innerHTML = `
+			<p>Kode<br>
+			&nbsp;&nbsp;Depan: <b>${data.kode.depan}</b><br>
+			&nbsp;&nbsp;Tengah: <b>${data.kode.tengah}</b><br>
+			&nbsp;&nbsp;Belakang: <b>${data.kode.belakang}</b></p>
+			<p>Pulau: <b>${data.pulau}</b></p>
+			<p>Wilayah:  <b>${data.wilayah}</b></p>
+			<p>Kota:  <b>${data.kota}</b></p>
+			`;
+		}
+		const platt = new URLSearchParams(window.location.search).get('plat');
+		const plat = document.getElementById('plat');
+		if (platt) {
+			plat.value = platt;
+			uuupdate({target: plat});
+		}
+		plat.oninput = uuupdate;
+	</script>
+</body>
+
+</html>
