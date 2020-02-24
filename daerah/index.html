@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Enumerasi Daerah Indonesia">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Enumerasi Daerah</title>
+</head>
+
+<body style="
+font-family: 'Segoe UI', sans-serif;
+max-width: 400px;
+margin: auto;
+background: #efd3fd;">
+	<style>
+		select {
+			width: 100%;
+			padding: 0.5em;
+			margin-top: 0.2em;
+		}
+	</style>
+	<form action="" method="get" name="form">
+		<p><label>Provinsi <select name="prov" id="prov" required></select></label></p>
+		<p><label>Kabupaten <select name="kab" id="kab" required></select></label></p>
+		<p><label>Kecamatan <select name="kec" id="kec" required></select></label></p>
+		<p><label>Desa <select name="desa" id="desa" required></select></label></p>
+		<p><input type="submit" name="submit"></p>
+	</form>
+	<script>
+		const prov = window.form.prov;
+		const kab = window.form.kab;
+		const kec = window.form.kec;
+		const desa = window.form.desa;
+		const submit = window.form.submit;
+
+		function updateProv() {
+			fetch(`//dev.farizdotid.com/api/daerahindonesia/provinsi`).then(r => {
+				if (r.status === 200) {
+					r.json().then(x => {
+						prov.innerHTML = `<option selected disabled value="">-- Pilih Provinsi --</option>` +
+							x
+							.semuaprovinsi.map(v => `<option value=${v.id}>${v.nama}</option>`).join('')
+						updateKab();
+						updateKec();
+						updateDesa();
+						updateSubmit();
+					});
+				}
+			})
+		}
+		updateProv();
+
+		function updateKab() {
+			kab.innerHTML = `<option selected disabled value="">-- Pilih Kabupaten --</option>`;
+			kab.disabled = kec.disabled = desa.disabled = submit.disabled = !prov.value;
+			if (prov.value)
+				fetch(`//dev.farizdotid.com/api/daerahindonesia/provinsi/${prov.value}/kabupaten`).then(r => {
+					if (r.status === 200) {
+						r.json().then(x => {
+							kab.innerHTML += x
+								.kabupatens.map(v => `<option value=${v.id}>${v.nama}</option>`).join('')
+							updateKec();
+							updateDesa();
+							updateSubmit();
+						});
+					}
+				})
+		}
+		prov.oninput = updateKab;
+
+		function updateKec() {
+			kec.innerHTML = `<option selected disabled value="">-- Pilih Kecamatan --</option>`;
+			kec.disabled = desa.disabled = submit.disabled = !kab.value;
+			if (kab.value)
+				fetch(`//dev.farizdotid.com/api/daerahindonesia/provinsi/kabupaten/${kab.value}/kecamatan`).then(r => {
+					if (r.status === 200) {
+						r.json().then(x => {
+							kec.innerHTML += x
+								.kecamatans.map(v => `<option value=${v.id}>${v.nama}</option>`).join('')
+							updateDesa();
+							updateSubmit();
+						});
+					}
+				})
+		}
+		kab.oninput = updateKec;
+
+		function updateDesa() {
+			desa.innerHTML = `<option selected disabled value="">-- Pilih Desa --</option>`;
+			desa.disabled = submit.disabled = !kec.value;
+			if (kec.value)
+				fetch(`//dev.farizdotid.com/api/daerahindonesia/provinsi/kabupaten/kecamatan/${kec.value}/desa`).then(r => {
+					if (r.status === 200) {
+						r.json().then(x => {
+							desa.innerHTML += x.desas.map(
+								v => `<option value=${v.id}>${v.nama}</option>`).join('')
+						});
+						updateSubmit();
+					}
+				})
+		}
+		kec.oninput = updateDesa;
+
+		function updateSubmit() {
+			submit.disabled = !desa.value;
+		}
+		desa.oninput = updateSubmit;
+	</script>
+	</body" font-family: 'Segoe UI' , sans-serif; max-width: 400px; margin: auto; background: #d3effd;">
+
+</html>
